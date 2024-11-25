@@ -13,7 +13,6 @@ void CreatePet(int);
 void BasicInfo();
 
 int main() {
-    NewGame();
     return 0;
 }
 
@@ -59,7 +58,7 @@ void StartMenu() {
                 cout << "Case 2" << endl;
                 break;
             case 3:
-                cout << "Case 3" << endl;
+                cout << "Thanks for playing Thumagotchi. See you again soon!" << endl;
                 break;
             default:
                 cout << "Invalid input" << endl;
@@ -91,22 +90,19 @@ void NewGame() {
     cout << "(_____)                                            (_____)" << endl
             << endl;
 
-    cout << "Take a look at all the wonderful pets we have!" << endl
-            << endl;
-    cout << "1. Bunny\n (\\_/)\n ('^')\nC(\")(\")" << endl
-            << endl;
-    cout << "2. Cat\n/\\___/\\\n(>'W'<)\n(\")_(\")_/" << endl
-            << endl;
-    cout << "3. Owl\n _____\n(o v o)\n((___))\n  ^ ^  " << endl
-            << endl;
-    cout << "4. Leave shelter" << endl
-            << endl;
-
     do {
+        cout << "Take a look at all the wonderful pets we have!" << endl
+                << endl;
+        cout << "1. BUNNY\n (\\_/)\n ('^')\nC(\")(\")" << endl
+                << endl;
+        cout << "2. CAT\n/\\___/\\\n(>'W'<)\n(\")_(\")_/" << endl
+                << endl;
+        cout << "3. OWL\n _____\n(o v o)\n((___))\n  ^ ^  " << endl
+                << endl;
+        cout << "4. LEAVE SHELTER" << endl
+                << endl;
         cout << "Which pet will you be taking home with you today? Select: ";
-
         cin >> option;
-
         switch (option) {
             case 1:
                 CreatePet(1);
@@ -125,7 +121,7 @@ void NewGame() {
         }
 
         if (option != 1 && option != 2 && option != 3 && option != 4)
-            cout << "Please choose a valid option." << endl;
+            cout << "Please choose a valid option.";
     } while (option != 1 && option != 2 && option != 3 && option != 4);
 }
 

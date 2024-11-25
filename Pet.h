@@ -31,6 +31,19 @@ public:
     int getHappiness();
 
     int getSickness();
+
+    // Base virtual functions
+    virtual void feed(int) = 0;
+
+    virtual void play(int) =0;
+
+    virtual void bathe(int) =0;
+
+    virtual void heal() =0;
+
+    virtual void printStatus() =0;
+
+    virtual ~Pet();
 };
 
 

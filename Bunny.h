@@ -5,16 +5,16 @@
 
 class Bunny : public Pet {
 private:
-    int fluffy;
+    bool rabbitsFoot;
 
 public:
     Bunny();
 
-    Bunny(string name, int food, int happiness, int sickness, int fluffy);
+    Bunny(string name, int food, int happiness, int sickness);
 
-    void setFluffy(int fluffy);
+    void setRabbitsFoot(bool);
 
-    int getFluffy();
+    bool getRabbitsFoot();
 
     // Override base virtual functions
     void feed(int);

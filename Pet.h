@@ -14,6 +14,8 @@ private:
 public:
     Pet();
 
+    Pet(string);
+
     Pet(string name, int food, int happiness, int sickness);
 
     void setName(string name);

@@ -7,6 +7,13 @@ Pet::Pet() {
     sickness = 0;
 }
 
+Pet::Pet(string name) {
+    this->name = name;
+    food = 0;
+    happiness = 0;
+    sickness = 0;
+}
+
 Pet::Pet(string name, int food, int happiness, int sickness) {
     this->name = name;
     this->food = food;

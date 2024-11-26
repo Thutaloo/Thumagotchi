@@ -1,25 +1,18 @@
 #include "Bunny.h"
 
-Bunny::Bunny() : Pet() {
-    this->fluffy = 0;
+Bunny::Bunny() : Pet("Swifty", 0, 0, 0) {
+    this->rabbitsFoot = false;
 }
 
-Bunny::Bunny(string name, int food, int happiness, int sickness, int fluffy) : Pet(name, food, happiness, sickness) {
-    this->fluffy = fluffy;
+Bunny::Bunny(string name, int food, int happiness, int sickness) : Pet(name, food, happiness, sickness) {
+    this->rabbitsFoot = false;
 }
 
-void Bunny::setFluffy(int fluffy) {
-    if (this->fluffy + fluffy < 0) {
-        this->fluffy = 0;
-    } else if (this->fluffy + fluffy > 5) {
-        this->fluffy = 5;
-    } else {
-        this->fluffy = this->fluffy + fluffy;
-    }
+void Bunny::setRabbitsFoot(bool rabbitsFoot) {
+    this->rabbitsFoot = rabbitsFoot;
 }
-
-int Bunny::getFluffy() {
-    return this->fluffy;
+bool Bunny::getRabbitsFoot() {
+    return this->rabbitsFoot;
 }
 
 // Override base virtual functions
@@ -29,11 +22,11 @@ void Bunny::feed(int option) {
         setFood(getFood() + 1);
         setHappiness(getHappiness() + 2);
     } else if (option == 2) {
-        cout << "Feeding " << getName() << " some spring mix. Delicious and nutritious!" << endl;
+        cout << "Feeding " << getName() << " some spring mix. Her favorite!" << endl;
         setFood(getFood() + 2);
         setHappiness(getHappiness() + 2);
     } else if (option == 3) {
-        cout << "Feeding " << getName() << " some meat. Wait, that doesn't seem right..." << endl;
+        cout << "Feeding " << getName() << " some meat. She got sick.." << endl;
         setSickness(getSickness() + 2);
     } else {
         cout << "This doesn't look like food..." << endl;
@@ -42,11 +35,11 @@ void Bunny::feed(int option) {
 
 void Bunny::play(int option) {
     if (option == 1) {
-        cout << "Giving " << getName() << " a treat ball." << endl;
+        cout << "Giving " << getName() << " a treat ball. She loves the treats!" << endl;
         setFood(getFood() + 1);
         setHappiness(getHappiness() + 2);
     } else if (option == 2) {
-        cout << "Giving " << getName() << " a foraging toy." << endl;
+        cout << "Giving " << getName() << " a foraging toy. She seems happy." << endl;
         setHappiness(getHappiness() + 2);
     } else if (option == 3) {
         cout << "Tickling " << getName() << ". She's loving the attention." << endl;
@@ -56,18 +49,26 @@ void Bunny::play(int option) {
     }
 }
 
+// TODO: add functionality for badEgg
 void Bunny::bathe(int option) {
+    if (option == 1 || option == 2) {
+        cout << "You gave " << getName() << " a bath. It stressed her out." << endl;
+        setHappiness(getHappiness() - 3);
+        setSickness(getSickness() + 2);
+        // Bite
+    } else {
+        cout << "???" << endl;
+    }
 }
 
 void Bunny::heal() {
-    cout << "Giving " << getName() << " some meds. Colors are returning to her face." << endl;
+    cout << "Giving " << getName() << " some meds. She starts hopping around again." << endl;
     setSickness(0);
 }
 
 void Bunny::printStatus() {
     cout << getName() << "'s status - Food: " << getFood() << ". Happiness: " << getHappiness() <<
-            ". Sickness: " << getSickness() << ". Fluffiness: " << fluffy << "." <<
-            endl;
+            ". Sickness: " << getSickness() << "." << endl;
 }
 
 Bunny::~Bunny() {

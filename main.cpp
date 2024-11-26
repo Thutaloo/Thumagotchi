@@ -1,4 +1,9 @@
 #include <iostream>
+#include "Bunny.cpp"
+#include "Cat.cpp"
+#include "Owl.cpp"
+#include "Player.h"
+
 using namespace std;
 
 // Functions declaration

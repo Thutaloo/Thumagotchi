@@ -5,10 +5,16 @@
 
 class Owl : public Pet {
 private:
+    bool owlsEye;
+
 public:
     Owl();
 
     Owl(string name, int food, int happiness, int sickness);
+
+    void setOwlsEye(bool);
+
+    bool getOwlsEye();
 
     // Override base virtual functions
     void feed(int);
@@ -17,11 +23,7 @@ public:
 
     void bathe(int);
 
-    void fluff();
-
     void heal();
-
-    void printStatus();
 
     ~Owl();
 };

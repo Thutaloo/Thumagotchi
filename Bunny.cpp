@@ -66,11 +66,6 @@ void Bunny::heal() {
     setSickness(0);
 }
 
-void Bunny::printStatus() {
-    cout << getName() << "'s status - Food: " << getFood() << ". Happiness: " << getHappiness() <<
-            ". Sickness: " << getSickness() << "." << endl;
-}
-
 Bunny::~Bunny() {
     cout << " (\\_/)" << endl;
     cout << " (x-x)" << endl;

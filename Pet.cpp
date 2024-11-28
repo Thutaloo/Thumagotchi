@@ -77,6 +77,11 @@ int Pet::getSickness() {
     return sickness;
 }
 
+void Pet::printStatus() {
+    cout << name << "'s status - Food: " << food << ". Happiness: " << happiness <<
+            ". Sickness: " << sickness << "." << endl;
+}
+
 Pet::~Pet() {
     cout << "        ." << endl;
     cout << "       -|-" << endl;

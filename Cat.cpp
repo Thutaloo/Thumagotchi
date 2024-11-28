@@ -22,7 +22,7 @@ void Cat::feed(int option) {
         cout << "Feeding " << getName() << " some kibble. He munches on a few." << endl;
         setFood(getFood() + 1);
     } else if (option == 2) {
-        cout << "Feeding " << getName() << " a canned food. He goes nuts for it!" << endl;
+        cout << "Feeding " << getName() << " some canned food. He goes nuts for it!" << endl;
         setFood(getFood() + 2);
         setHappiness(getHappiness() + 2);
     } else if (option == 3) {
@@ -68,13 +68,8 @@ void Cat::bathe(int option) {
 
 void Cat::heal() {
     cout << "Giving " << getName() << " some meds. He ran right back to his cat tree." << endl;
-    setHappiness(getHappiness() - 1);
+    setHappiness(getHappiness() - 2);
     setSickness(0);
-}
-
-void Cat::printStatus() {
-    cout << getName() << "'s status - Food: " << getFood() << ". Happiness: " << getHappiness() <<
-            ". Sickness: " << getSickness() << "." << endl;
 }
 
 Cat::~Cat() {

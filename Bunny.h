@@ -25,8 +25,6 @@ public:
 
     void heal();
 
-    void printStatus();
-
     ~Bunny();
 };
 

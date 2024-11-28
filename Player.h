@@ -15,19 +15,15 @@ private:
 public:
     Player();
 
-    Player(string);
+    Player(string, int, Pet*);
 
     string getName();
 
     int getBadEgg();
 
-    Pet *getPet();
-
     void setBadEgg(int);
 
     void setName(string);
-
-    void setPet(Pet *);
 
     ~Player();
 };

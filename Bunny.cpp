@@ -50,6 +50,7 @@ void Bunny::play(int option) {
         setHappiness(getHappiness() + 2);
     } else if (option == 2) {
         cout << "Giving " << getName() << " a foraging toy. She seems happy." << endl;
+        setFood(getFood() - 1);
         setHappiness(getHappiness() + 2);
     } else if (option == 3) {
         cout << "Tickling " << getName() << ". She's loving the attention." << endl;

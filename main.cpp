@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include <limits>
 
 #include "Bunny.h"
 #include "Cat.h"
@@ -19,44 +20,86 @@ const string RDSTRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs
 const string FILE_NAME = "Thumagotchi.txt";
 
 // Functions declaration
+// Draws a line (e.g., for visual separation in menus or outputs).
 void Line();
 
+// Generates a random alphanumeric string of the length 10 to use as password
 string generateRandomString(int length);
 
+// Loads the saved game state from a file and returns a pointer to the loaded Pet object
 Pet *LoadGame();
 
+// Saves the current game state to a file.
 void SaveGame(Pet *pet);
 
+// Displays the start menu options to the player
 void StartMenu();
 
+// Starts a new game by initializing a new Pet object and returning it to the caller
 Pet *NewGame();
 
+// Creates a new Pet object based on the player's choice of Pet type
 Pet *CreatePet(int);
 
+// Prompts the player for a Pet name. If no name is provided, uses the default name.
 string GetPetName(string defaultName);
 
+// Main game loop where the player interacts with the Pet and performs actions like feeding, playing, or bathing
 void GamePlay(Pet *pet, Player *player);
 
+// Feeds the Pet, increasing/decreasing its food level and possibly affecting other attributes
 void Feed(Pet *pet);
 
+// Allows the player to play with the Pet, increasing/decreasing its happiness but possibly affecting food or sickness levels
 void Play(Pet *pet);
 
+// Bathes the Pet, potentially increasing/decreasing happiness and affecting sickness
 void Bathe(Pet *pet);
 
+// Immediately ends the game with the worst outcome
 void BadOutcome(Pet *pet, Player *player);
 
+// Allows user to see what happens when they finish the game with the best outcome
+void Cheat(Pet *pet);
+
+// Not so subtle easter egg
 void SomethingCool();
+
+// Clears the input buffer for error handling
+void clearInput();
+
+// Ends the game
+void EndGame();
 
 
 // main()
 int main() {
+    cout << R"( _____                                                                     _____)" << endl;
+    cout << R"(( ___ )                                                                   ( ___ ))" << endl;
+    cout << R"( |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   | )" << endl;
+    cout << R"( |   |       __        __   _                            _                 |   | )" << endl;
+    cout << R"( |   |       \ \      / /__| | ___ ___  _ __ ___   ___  | |_ ___           |   | )" << endl;
+    cout << R"( |   |        \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \          |   | )" << endl;
+    cout << R"( |   |         \ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |         |   | )" << endl;
+    cout << R"( |   |          \_/\_/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/          |   | )" << endl;
+    cout << R"( |   |  _____ _                                       _       _     _   _  |   | )" << endl;
+    cout << R"( |   | |_   _| |__  _   _ _ __ ___   __ _  __ _  ___ | |_ ___| |__ (_) | | |   | )" << endl;
+    cout << R"( |   |   | | | '_ \| | | | '_ ` _ \ / _` |/ _` |/ _ \| __/ __| '_ \| | | | |   | )" << endl;
+    cout << R"( |   |   | | | | | | |_| | | | | | | (_| | (_| | (_) | || (__| | | | | |_| |   | )" << endl;
+    cout << R"( |   |   |_| |_| |_|\__,_|_| |_| |_|\__,_|\__, |\___/ \__\___|_| |_|_| (_) |   | )" << endl;
+    cout << R"( |   |                                    |___/                            |   | )" << endl;
+    cout << R"( |___|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|___| )" << endl;
+    cout << R"((_____)                                                                   (_____))" << endl
+            << endl;
+
     StartMenu();
     return 0;
 }
 
 // Functions implementation
 void Line() {
-    cout << ">>=============================================================================<<" << endl;
+    cout << ">>=================================================================================================<<" <<
+            endl;
 }
 
 string generateRandomString() {
@@ -95,6 +138,11 @@ Pet *LoadGame() {
             getline(file, name);
             getline(file, type);
             file >> food >> happiness >> sickness >> badEgg;
+            break;
+        } else {
+            cout << "That save file doesn't exist. Did you forget your password?" << endl;
+            StartMenu();
+            break;
         }
     }
 
@@ -106,7 +154,6 @@ Pet *LoadGame() {
     } else if (type == "Owl") {
         pet = new Owl(name, food, happiness, sickness, badEgg);
     } else {
-        cout << "Error fetching pet type" << endl;
         pet = nullptr;
     }
 
@@ -128,7 +175,7 @@ void SaveGame(Pet *pet) {
 
     file << password << endl << pet->getName() << endl << pet->getType() << endl << pet->getFood() << endl << pet->
             getHappiness() << endl << pet->
-            getSickness() << endl << endl;
+            getSickness() << endl << pet->getBadEgg() << endl << endl;
 
     Line();
     cout << "Game saved in 'Thumagotchi.txt'. Your password for this save is: " << password << endl << endl;
@@ -143,24 +190,6 @@ void StartMenu() {
     Pet *pet;
     int option;
 
-    cout << R"( _____                                                                     _____)" << endl;
-    cout << R"(( ___ )                                                                   ( ___ )" << endl;
-    cout << R"( |   |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|   | )" << endl;
-    cout << R"( |   |       __        __   _                            _                 |   | )" << endl;
-    cout << R"( |   |       \ \      / /__| | ___ ___  _ __ ___   ___  | |_ ___           |   | )" << endl;
-    cout << R"( |   |        \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \          |   | )" << endl;
-    cout << R"( |   |         \ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |         |   | )" << endl;
-    cout << R"( |   |          \_/\_/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/          |   | )" << endl;
-    cout << R"( |   |  _____ _                                       _       _     _   _  |   | )" << endl;
-    cout << R"( |   | |_   _| |__  _   _ _ __ ___   __ _  __ _  ___ | |_ ___| |__ (_) | | |   | )" << endl;
-    cout << R"( |   |   | | | '_ \| | | | '_ ` _ \ / _` |/ _` |/ _ \| __/ __| '_ \| | | | |   | )" << endl;
-    cout << R"( |   |   | | | | | | |_| | | | | | | (_| | (_| | (_) | || (__| | | | | |_| |   | )" << endl;
-    cout << R"( |   |   |_| |_| |_|\__,_|_| |_| |_|\__,_|\__, |\___/ \__\___|_| |_|_| (_) |   | )" << endl;
-    cout << R"( |   |                                    |___/                            |   | )" << endl;
-    cout << R"( |___|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|___| )" << endl;
-    cout << R"((_____)                                                                   (_____))" << endl
-            << endl;
-
     do {
         Line();
         cout << "1. NEW GAME\n2. LOAD GAME\n3. EXIT\n4. See something cool\n";
@@ -168,6 +197,7 @@ void StartMenu() {
         cout << "Select: ";
 
         cin >> option;
+        clearInput();
 
         switch (option) {
             case 1:
@@ -203,13 +233,84 @@ void StartMenu() {
         GamePlay(pet, player);
     } while (pet != nullptr && pet->checkStatus() != 1 && pet->checkStatus() != 2 && pet->checkStatus() != 3);
 
-    if (pet != nullptr) {
-        if (pet->checkStatus() == 1) {
-        } else if (pet->checkStatus() == 2) {
+    if (pet != nullptr && player != nullptr) {
+        if (pet->checkStatus() == 2) {
+            Line();
+            if (pet->getType() == "Bunny") {
+                cout << " (\\_/)" << " \3" << endl;
+                cout << " (^u^)" << endl;
+                cout << "C(\")(\")" << "  " << endl << endl;
+            } else if (pet->getType() == "Cat") {
+                cout << "/\\___/\\" << " \3" << endl;
+                cout << "(>^W^<)" << endl;
+                cout << "(\")(\")_/" << "  " << endl << endl;
+            } else if (pet->getType() == "Owl") {
+                cout << " _____" << endl;
+                cout << "(^ v ^)" << " \3" << endl;
+                cout << "((___))" << endl;
+                cout << "  ^ ^  " << "  " << endl << endl;
+            }
+
+            cout << "You've been taking really good care of " << pet->getName() <<
+                    ".\nThe two of you look forward to a happy future together." << endl;
+            Line();
+            EndGame();
+        } else if (pet->checkStatus() == 1) {
+            Line();
+            if (pet->getType() == "Bunny") {
+                cout << " (\\_/)" << " \3" << endl;
+                cout << " (^u^)" << endl;
+                cout << "C(\")(\")" << "  " << endl << endl;
+            } else if (pet->getType() == "Cat") {
+                cout << "/\\___/\\" << " \3" << endl;
+                cout << "(>^W^<)" << endl;
+                cout << "(\")(\")_/" << "  " << endl << endl;
+            } else if (pet->getType() == "Owl") {
+                cout << " _____" << endl;
+                cout << "(^ v ^)" << " \3" << endl;
+                cout << "((___))" << endl;
+                cout << "  ^ ^  " << "  " << endl << endl;
+            }
+            cout << "You're the best owner " << pet->getName() <<
+                    " could've asked for." << endl;
+            cout << pet->getName() << " gave you this for being a good egg." << endl;
+            player->printGoodEgg();
+            Line();
+            EndGame();
         } else if (pet->checkStatus() == 3) {
+            Line();
+            // Art by Jonathon R. Oglesbee
+            cout << R"(                                 [O])" << endl;
+            cout << R"(                                 [O])" << endl;
+            cout << R"(                                 [O])" << endl;
+            cout << R"(          ____   /`  ___          ||)" << endl;
+            cout << R"(      ___/O|__\_/_  /___\         ||)" << endl;
+            cout << R"(     /_____\__/___/|x===o|        ||)" << endl;
+            cout << R"(______(o)_______(o)||___||________||________)" << endl;
+            cout << R"(       ________  ~.>\`    '    ________)" << endl;
+            cout << R"( .  '  \__[]__/  '  ^^   .  .  \[]____/ ')" << endl;
+            cout << R"(       //\__/\\  '    ((())    /_/o\\\)" << endl;
+            cout << R"(  '.   ( o__o )       aa((((    <_  )/)" << endl;
+            cout << R"(        \ __ /  .  '  \-(((( .   \__/   .)" << endl;
+            cout << R"( .     __\__/___      / /\\(     /   \)" << endl;
+            cout << R"(      /| \||/  |\    ( ( //  .  ||PD|| '  .)" << endl;
+            cout << R"(     / |  \/  @| \    \ //      ||  ||)" << endl;
+            cout << R"(    /  |_  __  |\ \   /[__]   ' ||  ||  .)" << endl;
+            cout << R"(.   \____|//_| |/ /  /_____\    ||__||)" << endl;
+            cout << R"(       |       |\/    | | | .   | / \|)" << endl;
+            cout << R"(       |_______|/     | | |     |_\\\|   .)" << endl;
+            cout << R"(        |     | .   ' |_|_|      |   |)" << endl;
+            cout << R"( .'     |  |  |      <-<--/      |   |)" << endl;
+            cout << R"(        |  |  |  '  '  .      '  |   |  '  ')" << endl;
+            cout << R"(  .     |__|__|                  |___|)" << endl;
+            cout << R"(       (__) (__)      .  '      (____)  .    )" << endl << endl;
+            cout << "You've been neglecting " << pet->getName() << endl;
+            cout << "Someone reported you to the police. They've taken " << pet->getName() <<
+                    " to a safe home." << endl;
+            cout << "You've been arrested, and the prison's Cat Pal program excluded you." << endl;
+            exit(0);
         }
     }
-
 
     delete pet;
     delete player;
@@ -249,7 +350,10 @@ Pet *NewGame() {
         cout << "4. LEAVE SHELTER" << endl
                 << endl;
         cout << "Which pet will you be taking home with you today? Select: ";
+
         cin >> option;
+        clearInput();
+
         switch (option) {
             case 1:
                 pet = CreatePet(1);
@@ -264,6 +368,7 @@ Pet *NewGame() {
                 cout << "Thank you for visiting us. Come back again soon!" << endl;
                 exit(0);
             default:
+                pet = nullptr;
                 cout << "Hmm, never heard of that breed before..." << endl;
         }
 
@@ -305,6 +410,7 @@ Pet *CreatePet(int option) {
             pet = new Owl(name);
             break;
         default:
+            pet = nullptr;
             cout << "Error creating pet" << endl;
             break;
     }
@@ -318,17 +424,23 @@ string GetPetName(string defaultName) {
 
     do {
         cout << "What'll it be?\n1. Let's give them a new name\n2. " << defaultName << " is a great name!\nSelect: ";
+
         cin >> option;
+        clearInput();
+
         switch (option) {
             case 1:
                 cout << "What will the new name be? Enter: " << endl;
                 cin.ignore();
                 getline(cin, name);
+                break;
             case 2:
                 cout << defaultName << " it is!" << endl;
                 name = defaultName;
+                break;
             default:
                 cout << "Please choose a valid option." << endl;
+                break;
         }
     } while (option != 1 && option != 2);
 
@@ -338,70 +450,80 @@ string GetPetName(string defaultName) {
 void GamePlay(Pet *pet, Player *player) {
     int option, exitOption;
 
-    do {
-        Line();
-        cout << "Please choose an interaction.\n1. Feed\n2. Play\3. Bathe\n4. Heal\n5. Print status\n";
+    if (pet != nullptr && player != nullptr) {
+        do {
+            Line();
+            cout << "Please choose an interaction.\n1. Feed\n2. Play\n3. Bathe\n4. Heal\n5. Print status\n";
 
-        if (pet->getType() == "Bunny") {
-            cout << "6. Get a rabbit's foot\n";
-        } else if (pet->getType() == "Cat") {
-            cout << "6. Declaw\n";
-        } else if (pet->getType() == "Owl") {
-            cout << "6. Get an owl's eye\n";
-        } else {
-            cout << "Error in GamePlay function" << endl;
-        }
-
-        cout << "7. Save game\n8. Exit (without saving)\nSelect: ";
-        cin >> option;
-
-        switch (option) {
-            case 1:
-                Feed(pet);
-                break;
-            case 2:
-                Play(pet);
-                break;
-            case 3:
-                Bathe(pet);
-                break;
-            case 4:
-                pet->heal();
-            case 5:
-                pet->printStatus();
-            case 6:
-                BadOutcome(pet, player);
-            case 7:
-                SaveGame(pet);
-            case 8:
-                do {
-                    cout << "Are you sure you want to quit? All unsaved progress will be gone." << endl;
-                    cout << "1. Yes\n2. No\nSelect: ";
-                    cin >> exitOption;
-
-                    switch (exitOption) {
-                        case 1:
-                            cout << "Thank you for playing." << endl;
-                            exit(0);
-                        case 2:
-                            continue;
-                        default:
-                            cout << "Error in GamePlay exit" << endl;
-                            break;
-                    }
-                    if (exitOption != 1 && exitOption != 2)
-                        cout << "Please choose a valid option." << endl;
-                } while (exitOption != 1 && exitOption != 2);
-            default:
+            if (pet->getType() == "Bunny") {
+                cout << "6. Get a rabbit's foot\n";
+            } else if (pet->getType() == "Cat") {
+                cout << "6. Declaw\n";
+            } else if (pet->getType() == "Owl") {
+                cout << "6. Get an owl's eye\n";
+            } else {
                 cout << "Error in GamePlay function" << endl;
-                break;
-        }
+            }
 
-        if (option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 7 &&
-            option != 8 && exitOption == 2)
-            cout << "Please choose a valid option." << endl;
-    } while (option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 7 &&
-             option != 8 && exitOption == 2);
+            cout << "7. Save game\n8. Cheater cheater easy winner\n9. Exit\nSelect: ";
+            cin >> option;
+            clearInput();
+
+            switch (option) {
+                case 1:
+                    Feed(pet);
+                    break;
+                case 2:
+                    Play(pet);
+                    break;
+                case 3:
+                    Bathe(pet);
+                    break;
+                case 4:
+                    pet->heal();
+                    break;
+                case 5:
+                    pet->printStatus();
+                    break;
+                case 6:
+                    BadOutcome(pet, player);
+                    break;
+                case 7:
+                    SaveGame(pet);
+                    break;
+                case 8:
+                    Cheat(pet);
+                    break;
+                case 9:
+                    do {
+                        cout << "Are you sure you want to quit? All unsaved progress will be gone." << endl;
+                        cout << "1. Yes\n2. No\nSelect: ";
+                        cin >> exitOption;
+                        clearInput();
+
+                        switch (exitOption) {
+                            case 1:
+                                cout << "Thank you for playing." << endl;
+                                exit(0);
+                            case 2:
+                                continue;
+                            default:
+                                cout << "Error in GamePlay exit" << endl;
+                                break;
+                        }
+                        if (exitOption != 1 && exitOption != 2)
+                            cout << "Please choose a valid option." << endl;
+                    } while (exitOption != 1 && exitOption != 2);
+                default:
+                    break;
+            }
+
+            if (option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 7 &&
+                option != 8 && option != 9 && exitOption == 2)
+                cout << "Please choose a valid option." << endl;
+        } while (option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 7 &&
+                 option != 8 && option != 9 && exitOption == 2);
+    }
 }
 
 void Feed(Pet *pet) {
@@ -413,6 +535,7 @@ void Feed(Pet *pet) {
             cout << "What would you like to feed " << pet->getName() << "?" << endl;
             cout << "1. Carrot\n2. Spring mix\n3. Meat\nSelect: ";
             cin >> option;
+            clearInput();
 
             if (option != 1 && option != 2 && option != 3)
                 cout << "Please choose a valid option." << endl;
@@ -424,6 +547,7 @@ void Feed(Pet *pet) {
             cout << "What would you like to feed " << pet->getName() << "?" << endl;
             cout << "1. Kibble\n2. Canned food\n3. Veggies\nSelect: ";
             cin >> option;
+            clearInput();
 
             if (option != 1 && option != 2 && option != 3)
                 cout << "Please choose a valid option." << endl;
@@ -435,6 +559,7 @@ void Feed(Pet *pet) {
             cout << "What would you like to feed " << pet->getName() << "?" << endl;
             cout << "1. Seeds\n2. Cooked chicken\n3. Raw chicken\nSelect: ";
             cin >> option;
+            clearInput();
 
             if (option != 1 && option != 2 && option != 3)
                 cout << "Please choose a valid option." << endl;
@@ -454,6 +579,7 @@ void Play(Pet *pet) {
             cout << "Please pick a toy for " << pet->getName() << endl;
             cout << "1. Treat ball\n2. Foraging toy\n3. I'm gonna tickle her\nSelect: ";
             cin >> option;
+            clearInput();
 
             if (option != 1 && option != 2 && option != 3)
                 cout << "Please choose a valid option." << endl;
@@ -465,6 +591,7 @@ void Play(Pet *pet) {
             cout << "Please pick a toy for " << pet->getName() << endl;
             cout << "1. Wand\n2. Mouse\n3. I'm gonna tickle his belly\nSelect: ";
             cin >> option;
+            clearInput();
 
             if (option != 1 && option != 2 && option != 3)
                 cout << "Please choose a valid option." << endl;
@@ -476,6 +603,7 @@ void Play(Pet *pet) {
             cout << "Please pick a toy for " << pet->getName() << endl;
             cout << "1. Cheap shredding foraging toy\n2. Woven ball\n3. I'm gonna tickle him\nSelect: ";
             cin >> option;
+            clearInput();
 
             if (option != 1 && option != 2 && option != 3)
                 cout << "Please choose a valid option." << endl;
@@ -494,6 +622,7 @@ void Bathe(Pet *pet) {
         cout << "Please  choose a water temperature for " << pet->getName() << "'s bath" << endl;
         cout << "1. Cold water\n2. Warm water\nSelect: ";
         cin >> option;
+        clearInput();
 
         if (option != 1 && option != 2)
             cout << "Please choose a valid option." << endl;
@@ -512,18 +641,23 @@ void BadOutcome(Pet *pet, Player *player) {
                     << pet->getName() << ".\nAre you sure you want to do this?" << endl;
             cout << "1. Yes\n2. Are you insane? Heck no\nSelect: ";
             cin >> option;
+            clearInput();
 
             switch (option) {
                 case 1:
                     do {
                         cout << "Are you sure you're sure?\n1. Yes\n2. I would never do that!\nSelect: ";
                         cin >> option1;
+                        clearInput();
+
                         switch (option1) {
                             case 1:
                                 do {
                                     cout <<
                                             "Are you sure you're sure you're sure?\n1. Yes\n2. For the last time, no!\nSelect: ";
                                     cin >> option2;
+                                    clearInput();
+
                                     switch (option2) {
                                         case 1:
                                             pet->badOutcome();
@@ -565,18 +699,23 @@ void BadOutcome(Pet *pet, Player *player) {
                     << pet->getName() << ".\nAre you sure you want to do this?" << endl;
             cout << "1. Yes\n2. Are you insane? Heck no\nSelect: ";
             cin >> option;
+            clearInput();
 
             switch (option) {
                 case 1:
                     do {
                         cout << "Are you sure you're sure?\n1. Yes\n2. I would never do that!\nSelect: ";
                         cin >> option1;
+                        clearInput();
+
                         switch (option1) {
                             case 1:
                                 do {
                                     cout <<
                                             "Are you sure you're sure you're sure?\n1. Yes\n2. For the last time, no!\nSelect: ";
                                     cin >> option2;
+                                    clearInput();
+
                                     switch (option2) {
                                         case 1:
                                             pet->badOutcome();
@@ -618,18 +757,23 @@ void BadOutcome(Pet *pet, Player *player) {
                     << pet->getName() << ".\nAre you sure you want to do this?" << endl;
             cout << "1. Yes\n2. Are you insane? Heck no\nSelect: ";
             cin >> option;
+            clearInput();
 
             switch (option) {
                 case 1:
                     do {
                         cout << "Are you sure you're sure?\n1. Yes\n2. I would never do that!\nSelect: ";
                         cin >> option1;
+                        clearInput();
+
                         switch (option1) {
                             case 1:
                                 do {
                                     cout <<
                                             "Are you sure you're sure you're sure?\n1. Yes\n2. For the last time, no!\nSelect: ";
                                     cin >> option2;
+                                    clearInput();
+
                                     switch (option2) {
                                         case 1:
                                             pet->badOutcome();
@@ -668,6 +812,40 @@ void BadOutcome(Pet *pet, Player *player) {
     }
 }
 
+void Cheat(Pet *pet) {
+    int option;
+
+    Line();
+    cout << "Trying to cheat there, are you? I'll allow it just this once." << endl;
+
+    do {
+        cout <<
+                "1. Yes please, it's taking too long and I have no patience.\n2. No thanks, I don't need child support, I'm an independent pet owner.\nSelect: ";
+
+        cin >> option;
+        clearInput();
+
+        switch (option) {
+            case 1:
+                pet->setFood(5);
+                pet->setHappiness(5);
+                pet->setSickness(0);
+                pet->setBadEgg(0);
+                break;
+            case 2:
+                cout << "Good for you!" << endl;
+                break;
+            default:
+                cout << "Error getting option from Cheat()" << endl;
+                break;
+        }
+
+        if (option != 1 && option != 2) {
+            cout << "Please choose a valid option." << endl;
+        }
+    } while (option != 1 && option != 2);
+}
+
 void SomethingCool() {
     Line();
     cout << "    ___________________" << endl;
@@ -686,4 +864,14 @@ void SomethingCool() {
     cout << "   | |___|___|___|___| |" << endl;
     cout << "   |___________________|" << endl;
     cout << "           hehe" << endl;
+}
+
+void clearInput() {
+    cin.clear();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void EndGame() {
+    cout << "Thanks for playing Thumagotchi! See you again soon!" << endl;
+    exit(0);
 }

@@ -51,6 +51,7 @@ void Owl::play(int option) {
         setSickness(getSickness() - 1);
     } else if (option == 2) {
         cout << "Giving " << getName() << " a woven ball. He's having a ball playing with it." << endl;
+        setFood(getFood() - 1);
         setHappiness(getHappiness() + 2);
     } else if (option == 3) {
         cout << "You try to tickle " << getName() << ". He's not that into it, but enjoys the attention." << endl;

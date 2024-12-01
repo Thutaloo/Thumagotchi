@@ -45,9 +45,11 @@ void Cat::feed(int option) {
 void Cat::play(int option) {
     if (option == 1) {
         cout << "Giving " << getName() << " a feather wand. He's curious, but not that into it." << endl;
+        setFood(getFood() - 1);
         setHappiness(getHappiness() + 1);
     } else if (option == 2) {
         cout << "Giving " << getName() << " a mouse toy. He loves it!" << endl;
+        setFood(getFood() - 1);
         setHappiness(getHappiness() + 3);
     } else if (option == 3) {
         cout << "You try to tickle " << getName() << "'s tummy. You immediately got scratched." << endl;

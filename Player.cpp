@@ -15,7 +15,6 @@ void Player::printGoodEgg() {
     cout << R"(:       :)" << endl;
     cout << R"(:       :)" << endl;
     cout << R"( `.___,')" << endl;
-    cout << endl << pet->getName() << " loves you. You received an egg as a gift." << endl;
 }
 
 void Player::printBadEgg() {

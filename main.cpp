@@ -119,7 +119,7 @@ string generateRandomString() {
 Pet *LoadGame() {
     Pet *pet;
     string line, name, type, password;
-    int food, happiness, sickness, badEgg;
+    int food, happiness, sickness, badEgg, count = 0;
 
     ifstream file(FILE_NAME);
 
@@ -128,22 +128,23 @@ Pet *LoadGame() {
         cerr << "Error opening file " << FILE_NAME << endl;
         exit(1);
     }
-
     cout << "Please enter the password to your saved game: ";
     cin >> password;
 
     // Get file input based on name
     while (getline(file, line)) {
         if (line == password) {
+            count++;
             getline(file, name);
             getline(file, type);
             file >> food >> happiness >> sickness >> badEgg;
             break;
-        } else {
-            cout << "That save file doesn't exist. Did you forget your password?" << endl;
-            StartMenu();
-            break;
         }
+    }
+
+    if (count == 0) {
+        cout << "That save does not exist. Did you forget your password?" << endl;
+        StartMenu();
     }
 
     // Create pet based on type
@@ -156,6 +157,8 @@ Pet *LoadGame() {
     } else {
         pet = nullptr;
     }
+
+    pet->printStatus();
 
     file.close();
 

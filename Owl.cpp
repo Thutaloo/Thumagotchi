@@ -48,7 +48,7 @@ void Owl::play(int option) {
     if (option == 1) {
         cout << "Giving " << getName() <<
                 " a cheap shredding-foraging toy. He accidentally swallows some of the fillings." << endl;
-        setSickness(getSickness() - 1);
+        setSickness(getSickness() + 1);
     } else if (option == 2) {
         cout << "Giving " << getName() << " a woven ball. He's having a ball playing with it." << endl;
         setFood(getFood() - 1);

@@ -102,7 +102,7 @@ int Pet::checkStatus() {
         } else {
             status = 2;
         }
-    } else if (food == 5 && happiness == 0 && sickness == 0) {
+    } else if (food == 0 && happiness == 0 && sickness == 5) {
         status = 3;
     } else {
         status = 4;

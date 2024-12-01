@@ -65,6 +65,7 @@ void Cat::bathe(int option) {
         cout << "You gave " << getName() <<
                 " a cold bath. The water touched his paw and he immediately scratched you and ran away." << endl;
         setHappiness(getHappiness() - 3);
+        setSickness(getSickness() + 1);
         setBadEgg(getBadEgg() + 2);
     } else if (option == 2) {
         cout << "You gave " << getName() << " a warm bath. He begrudgingly stayed in the tub and shot you death glares."

@@ -10,13 +10,17 @@ private:
 public:
     Bunny();
 
-    Bunny(string name, int food, int happiness, int sickness);
+    Bunny(string name);
+
+    Bunny(string name, int food, int happiness, int sickness, int badEgg);
 
     void setRabbitsFoot(bool);
 
     bool getRabbitsFoot();
 
     // Override base virtual functions
+    string getType();
+
     void feed(int);
 
     void play(int);
@@ -24,6 +28,8 @@ public:
     void bathe(int);
 
     void heal();
+
+    void badOutcome();
 
     ~Bunny();
 };

@@ -10,13 +10,13 @@ private:
     int food;
     int happiness;
     int sickness;
-
+    int badEgg;
 public:
     Pet();
 
     Pet(string);
 
-    Pet(string name, int food, int happiness, int sickness);
+    Pet(string name, int food, int happiness, int sickness, int badEgg);
 
     void setName(string name);
 
@@ -26,6 +26,8 @@ public:
 
     void setSickness(int sickness);
 
+    void setBadEgg(int badEgg);
+
     string getName();
 
     int getFood();
@@ -34,9 +36,15 @@ public:
 
     int getSickness();
 
+    int getBadEgg();
+
+    int checkStatus();
+
     void printStatus();
 
     // Base virtual functions
+    virtual string getType() = 0;
+
     virtual void feed(int) = 0;
 
     virtual void play(int) = 0;
@@ -45,6 +53,7 @@ public:
 
     virtual void heal() = 0;
 
+    virtual void badOutcome() = 0;
 
     virtual ~Pet();
 };

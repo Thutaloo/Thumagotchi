@@ -1,10 +1,14 @@
 #include "Cat.h"
 
-Cat::Cat() : Pet("Wilbur", 0, 0, 0) {
+Cat::Cat() : Pet("Wilbur", 2, 2, 0, 0) {
     this->isDeclawed = false;
 }
 
-Cat::Cat(string name, int food, int happiness, int sickness) : Pet(name, food, happiness, sickness) {
+Cat::Cat(string name) : Pet(name, 2, 2, 0, 0) {
+    this->isDeclawed = false;
+}
+
+Cat::Cat(string name, int food, int happiness, int sickness, int badEgg) : Pet(name, food, happiness, sickness, badEgg) {
     this->isDeclawed = false;
 }
 
@@ -17,6 +21,10 @@ bool Cat::getDeclawed() {
 }
 
 // Override base virtual functions
+string Cat::getType() {
+    return "Cat";
+}
+
 void Cat::feed(int option) {
     if (option == 1) {
         cout << "Feeding " << getName() << " some kibble. He munches on a few." << endl;
@@ -28,13 +36,12 @@ void Cat::feed(int option) {
     } else if (option == 3) {
         cout << "Feeding " << getName() << " some veggies. He looks at you with disdain and swipes at you." << endl;
         setFood(getFood() + 1);
-        // Scratch
+        setBadEgg(getBadEgg() + 1);
     } else {
         cout << "This doesn't look like food..." << endl;
     }
 }
 
-// TODO: Scratch
 void Cat::play(int option) {
     if (option == 1) {
         cout << "Giving " << getName() << " a feather wand. He's curious, but not that into it." << endl;
@@ -45,19 +52,18 @@ void Cat::play(int option) {
     } else if (option == 3) {
         cout << "You try to tickle " << getName() << "'s tummy. You immediately got scratched." << endl;
         setHappiness(getHappiness() - 1);
-        // Scratch
+        setBadEgg(getBadEgg() + 1);
     } else {
         cout << "You don't have anything like that..." << endl;
     }
 }
 
-// TODO: add functionality for badEgg
 void Cat::bathe(int option) {
     if (option == 1) {
         cout << "You gave " << getName() <<
                 " a cold bath. The water touched his paw and he immediately scratched you and ran away." << endl;
         setHappiness(getHappiness() - 3);
-        // Scratch
+        setBadEgg(getBadEgg() + 2);
     } else if (option == 2) {
         cout << "You gave " << getName() << " a warm bath. He begrudgingly stayed in the tub and shot you death glares."
                 << endl;
@@ -72,8 +78,8 @@ void Cat::heal() {
     setSickness(0);
 }
 
-Cat::~Cat() {
-    cout << "/\\___/\\" << endl;
-    cout << "(>x_x<)" << endl;
-    cout << "(\")(\")_/" << endl << endl;
+void Cat::badOutcome() {
+    this->isDeclawed = true;
 }
+
+Cat::~Cat() = default;

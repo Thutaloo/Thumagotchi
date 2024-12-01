@@ -10,13 +10,17 @@ private:
 public:
     Cat();
 
-    Cat(string name, int food, int happiness, int sickness);
+    Cat(string name);
+
+    Cat(string name, int food, int happiness, int sickness, int badEgg);
 
     void setDeclawed(bool);
 
     bool getDeclawed();
 
     // Override base virtual functions
+    string getType();
+
     void feed(int);
 
     void play(int);
@@ -24,6 +28,8 @@ public:
     void bathe(int);
 
     void heal();
+
+    void badOutcome();
 
     ~Cat();
 };

@@ -1,33 +1,43 @@
 #include "Player.h"
 
 Player::Player() {
-    name = "";
-    badEgg = 0;
     pet = nullptr;
 }
 
-Player::Player(string name, int badEgg, Pet *pet) {
-    this->name = name;
-    this->badEgg = badEgg;
+Player::Player(Pet *pet) {
     this->pet = pet;
 }
 
-string Player::getName() {
-    return name;
+void Player::printGoodEgg() {
+    // Art by Hayley Jane Wakenshaw
+    cout << R"(  ,'"`.)" << endl;
+    cout << R"( /     \)" << endl;
+    cout << R"(:       :)" << endl;
+    cout << R"(:       :)" << endl;
+    cout << R"( `.___,')" << endl;
+    cout << endl << pet->getName() << " loves you. You received an egg as a gift." << endl;
 }
 
-int Player::getBadEgg() {
-    return badEgg;
+void Player::printBadEgg() {
+    cout << R"(                       _____________________)" << endl;
+    cout << R"(    /  .       .      (<$$$$$$>#####<::::::>))" << endl;
+    cout << R"(   .      .     .  _/~~~~~~~~~~~~~~~~~~~~~~~~~\_   .       .   .   \)" << endl;
+    cout << R"(.(          . .  /~                             ~\ . .   .)" << endl;
+    cout << R"(  ( . .        .~                                 ~.      .         ))" << endl;
+    cout << R"(           ()\/_____                           _____\/()   .    .  ).)" << endl;
+    cout << R"((         .-''      ~~~~~~~~~~~~~~~~~~~~~~~~~~~     ``-.  ...)" << endl;
+    cout << R"(.  . . .-~              __________________              ~-.  .    /)" << endl;
+    cout << R"( .   ..`~~/~~~~~~~~~~~~TTTTTTTTTTTTTTTTTTTT~~~~~~~~~~~~\~~'    . ) .)" << endl;
+    cout << R"(    . .| | | #### #### || | | | [] | | | || #### #### | | | .)" << endl;
+    cout << R"(   (   ;__\|___________|++++++++++++++++++|___________|/__;.   .)" << endl;
+    cout << R"(     .  (~~====___________________________________====~~~))" << endl;
+    cout << R"( ( .  .. \------_____________[ POLICE ]__________-------/ ..  .     ))" << endl;
+    cout << R"(         .  |      ||         ~~~~~~~~       ||      |)" << endl;
+    cout << R"(             \_____/                          \_____/)" << endl << endl;
+    cout << "You attempted to do a terrible thing to " << pet->getName() << "." << endl <<
+            "You were reported to the police, and they've taken " << pet->getName() <<
+            " to a shelter. You got arrested." << endl;
+    exit(0);
 }
 
-void Player::setBadEgg(int badEgg) {
-    this->badEgg = badEgg;
-}
-
-void Player::setName(string name) {
-    this->name = name;
-}
-
-Player::~Player() {
-    cout << "ur ded" << endl;
-}
+Player::~Player() = default;

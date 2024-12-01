@@ -8,22 +8,16 @@ using namespace std;
 
 class Player {
 private:
-    string name;
-    int badEgg;
     Pet *pet;
 
 public:
     Player();
 
-    Player(string, int, Pet*);
+    Player(Pet *);
 
-    string getName();
+    void printGoodEgg();
 
-    int getBadEgg();
-
-    void setBadEgg(int);
-
-    void setName(string);
+    void printBadEgg();
 
     ~Player();
 };

@@ -1,10 +1,15 @@
 #include "Owl.h"
 
-Owl::Owl() : Pet("Scamp", 0, 0, 0) {
+Owl::Owl() : Pet("Scamp", 2, 2, 0, 0) {
     this->owlsEye = false;
 }
 
-Owl::Owl(string name, int food, int happiness, int sickness) : Pet(name, food, happiness, sickness) {
+Owl::Owl(string name) : Pet(name, 2, 2, 0, 0) {
+    this->owlsEye = false;
+}
+
+Owl::Owl(string name, int food, int happiness, int sickness, int badEgg) : Pet(
+    name, food, happiness, sickness, badEgg) {
     this->owlsEye = false;
 }
 
@@ -17,10 +22,15 @@ bool Owl::getOwlsEye() {
 }
 
 // Override base virtual functions
+string Owl::getType() {
+    return "Owl";
+}
+
 void Owl::feed(int option) {
     if (option == 1) {
         cout << "Feeding " << getName() << " some seeds. He can't eat it with his beak..." << endl;
-        // Peck
+        setHappiness(getHappiness() - 1);
+        setBadEgg(getBadEgg() + 1);
     } else if (option == 2) {
         cout << "Feeding " << getName() << " some cooked chicken. He doesn't like it much..." << endl;
         setFood(getFood() + 1);
@@ -58,21 +68,21 @@ void Owl::bathe(int option) {
     } else if (option == 2) {
         cout << "You gave " << getName() << " a warm bath. He hates the heat and pecks at you."
                 << endl;
-        // Peck
+        setBadEgg(getBadEgg() + 1);
     } else {
         cout << "???" << endl;
     }
 }
 
 void Owl::heal() {
-    cout << "Giving " << getName() << " some meds. The pill was too big and he hates it, but he does feel better." << endl;
+    cout << "Giving " << getName() << " some meds. The pill was too big and he hates it, but he does feel better." <<
+            endl;
     setHappiness(getHappiness() - 1);
     setSickness(0);
 }
 
-Owl::~Owl() {
-    cout << " _____" << endl;
-    cout << "(x v x)" << endl;
-    cout << "((___))" << endl;
-    cout << "  ^ ^  " << endl << endl;
+void Owl::badOutcome() {
+    this->owlsEye = true;
 }
+
+Owl::~Owl() = default;
